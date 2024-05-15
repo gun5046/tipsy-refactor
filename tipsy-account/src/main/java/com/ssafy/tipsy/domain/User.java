@@ -1,5 +1,6 @@
 package com.ssafy.tipsy.domain;
 
+import com.ssafy.tipsy.common.util.PasswordEncoderHolder;
 import com.ssafy.tipsy.controller.request.SignUpRequest;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,10 +33,10 @@ public class User {
                 .build();
     }
 
-    public User changePwd(String pwd) {
+    public User encryptPwd(String pwd, PasswordEncoderHolder passwordEncoderHolder) {
         return User.builder()
                 .info(info)
-                .loginInfo(loginInfo.changePwd(pwd))
+                .loginInfo(loginInfo.encryptPwd(pwd,passwordEncoderHolder))
                 .build();
     }
 

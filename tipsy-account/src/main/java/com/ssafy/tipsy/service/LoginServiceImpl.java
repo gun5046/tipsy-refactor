@@ -27,8 +27,7 @@ public class LoginServiceImpl implements LoginService {
     public User regist(User user) {
         user.getLoginInfo().validateId();
         String plainPwd = user.getLoginInfo().getPwd();
-        String encPwd = passwordEncoderHolder.encode(plainPwd);
-        User registableUser = user.changePwd(encPwd);
+        User registableUser = user.encryptPwd(plainPwd,passwordEncoderHolder);
         return loginRepository.save(registableUser);
     }
 }

@@ -1,21 +1,25 @@
 package com.ssafy.tipsy.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class Friend {
-    private final OwnerInfo ownerInfo;
-    private final List<FriendInfo> friendsList;
+    private final Long id;
+    private final UserInfo ownerInfo;
+    private final List<UserInfo> friendsList;
 
-    private final List<ReceivedRequest> receivedRequestList;
-    private final List<SentRequest> sentRequestsList;
+    private final List<ReceivedInvitation> receivedInvitationList;
+    private final List<SentInvitation> sentInvitationList;
 
     @Builder
-    public Friend(OwnerInfo ownerInfo, List<FriendInfo> friendsList, List<ReceivedRequest> receivedRequestList, List<SentRequest> sentRequestsList) {
+    public Friend(Long id, UserInfo ownerInfo, List<UserInfo> friendsList, List<ReceivedInvitation> receivedInvitationList, List<SentInvitation> sentRequestsList) {
+        this.id = id;
         this.ownerInfo = ownerInfo;
         this.friendsList = friendsList;
-        this.receivedRequestList = receivedRequestList;
-        this.sentRequestsList = sentRequestsList;
+        this.receivedInvitationList = receivedInvitationList;
+        this.sentInvitationList = sentRequestsList;
     }
 }

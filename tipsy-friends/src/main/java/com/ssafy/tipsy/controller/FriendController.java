@@ -19,22 +19,22 @@ public class FriendController {
 
 
     @PostMapping("/req")
-    public ResponseEntity<?> sendRequest(@RequestBody FriendRequest friendRequest) {
+    public ResponseEntity<?> sendInvitation(@RequestBody FriendRequest friendRequest) {
 
     }
 
     @PutMapping("/accepted-req")
-    public ResponseEntity<?> acceptRequest(@RequestBody FriendRequest friendRequest) {
+    public ResponseEntity<?> acceptInvitation(@RequestBody FriendRequest friendRequest) {
 
     }
 
     @PutMapping("/denied-req")
-    public ResponseEntity<?> denyRequest(@RequestBody FriendRequest friendRequest) {
+    public ResponseEntity<?> denyInvitation(@RequestBody FriendRequest friendRequest) {
 
     }
 
     @GetMapping("/req")
-    public ResponseEntity<?> getReceivedRequestList(@RequestParam Long userId) {
+    public ResponseEntity<?> getReceivedInvitationList(@RequestParam Long userId) {
 
 
     }

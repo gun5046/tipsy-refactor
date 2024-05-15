@@ -3,6 +3,8 @@ package com.ssafy.tipsy.auth;
 
 import com.ssafy.tipsy.auth.model.AuthFail;
 import com.ssafy.tipsy.auth.model.Role;
+import com.ssafy.tipsy.auth.model.UserAuth;
+import com.ssafy.tipsy.common.infrastructure.SystemClockHolder;
 import com.ssafy.tipsy.common.infrastructure.TestClockHolder;
 import com.ssafy.tipsy.common.util.ClockHolder;
 import io.jsonwebtoken.Claims;
@@ -10,6 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -30,11 +33,18 @@ public class JwtProviderTest {
 
 
     String salt="TestTestTestTestTestTestTestTestTestTestTestTestTestTest";
-    Key secretKey= Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
+    Key secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
+
+    Date date = new Date();
+
     private final long accessTokenValidTime = 30 * 10 * 1000L;
-    private JwtProvider jwtProvider = new JwtProvider(salt, secretKey,new TestClockHolder(60L));
 
-
+    private JwtProvider jwtProvider = new JwtProvider(new TestClockHolder(60L));
+    @BeforeEach
+    void init(){
+        jwtProvider.salt=salt;
+        jwtProvider.secretKey = secretKey;
+    }
 
     @Test
     void Nickname과_Role으로_JWTToken을_만들_수_있다(){
@@ -66,11 +76,20 @@ public class JwtProviderTest {
         //given
         String nickname = "닉네임";
         Role role = Role.USER;
-        JwtProvider newJwtProvider = new JwtProvider(salt,secretKey,new TestClockHolder(60000000000000L));
-        String token = newJwtProvider.createJwtToken(nickname, role);
+        Claims claims = Jwts.claims().setSubject(nickname);
+        claims.put("role",role);
+        Map<String,Object> header = new HashMap<>();
+        header.put("typ","JWT-ACCESSTOKEN");
+        header.put("alg","HS256");
+
+        String token =  Jwts.builder().setClaims(claims).setIssuedAt(date)
+                .setExpiration(new Date(date.getTime()+accessTokenValidTime))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+
 
         //when
-        AuthFail fail = newJwtProvider.validateToken(token);
+        AuthFail fail = jwtProvider.validateToken(token);
 
         //then
         assertThat(fail).isNull();
@@ -135,9 +154,16 @@ public class JwtProviderTest {
         //given
         String nickname = "닉네임";
         Role role = Role.USER;
-        JwtProvider newJwtProvider = new JwtProvider(salt, secretKey, new TestClockHolder(60000000000000L));
-        String token = newJwtProvider.createJwtToken(nickname, role);
+        Claims claims = Jwts.claims().setSubject(nickname);
+        claims.put("role",role);
+        Map<String,Object> header = new HashMap<>();
+        header.put("typ","JWT-ACCESSTOKEN");
+        header.put("alg","HS256");
 
+        String token =  Jwts.builder().setClaims(claims).setIssuedAt(date)
+                .setExpiration(new Date(date.getTime()+accessTokenValidTime))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
         //when
         Authentication authentication = jwtProvider.getAuthentication(token);
 

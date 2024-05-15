@@ -10,6 +10,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,18 +31,13 @@ import java.util.Map;
 public class JwtProvider {
 
     @Value("${JWT-SECRET}")
-    private String salt;
+    public String salt;
 
-    private Key secretKey;
+    public Key secretKey;
     private final long accessTokenValidTime = 30 * 10 * 1000L;
 
     private final ClockHolder clockHolder;
 
-    public JwtProvider(String salt,Key secretKey, ClockHolder clockHolder){
-        this.salt=salt;
-        this.secretKey =secretKey;
-        this.clockHolder= clockHolder;
-    }
 
     @PostConstruct
     protected void init(){

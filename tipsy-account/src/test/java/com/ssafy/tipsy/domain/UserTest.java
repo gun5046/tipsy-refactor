@@ -66,7 +66,7 @@ public class UserTest {
                         .build())
                 .build();
         //when
-        User result = user.changePwd(encPwd);
+        User result = user.encryptPwd(plainPwd,passwordEncoder);
         //then
         assertThat(result.getLoginInfo().getPwd()).isEqualTo(encPwd);
     }

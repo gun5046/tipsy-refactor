@@ -5,6 +5,7 @@ import com.ssafy.tipsy.common.util.ClockHolder;
 import java.util.Date;
 
 public class TestClockHolder implements ClockHolder {
+    long time;
     public TestClockHolder(long time) {
         this.time = time;
     }
@@ -13,11 +14,10 @@ public class TestClockHolder implements ClockHolder {
         this.time = time;
     }
 
-    long time;
 
     @Override
     public long getTime() {
-        return time;
+        return  time;
     }
 
     @Override

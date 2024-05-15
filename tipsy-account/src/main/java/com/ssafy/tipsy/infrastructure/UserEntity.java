@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -53,7 +53,7 @@ public class UserEntity {
         return UserEntity.builder()
                 .id(user.getId())
                 .loginId(user.getLoginInfo().loginId)
-                .pwd(user.getLoginInfo().loginId)
+                .pwd(user.getLoginInfo().getPwd())
                 .nickname(user.getInfo().nickname)
                 .birth(user.getInfo().birth)
                 .image(user.getInfo().image)

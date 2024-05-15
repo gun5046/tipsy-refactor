@@ -16,10 +16,10 @@ public class LoginInfo {
     public String loginId;
     public String pwd;
 
-    public LoginInfo changePwd(String pwd) {
+    public LoginInfo encryptPwd(String pwd,PasswordEncoderHolder passwordEncoderHolder) {
         return LoginInfo.builder()
                 .loginId(this.loginId)
-                .pwd(pwd)
+                .pwd(passwordEncoderHolder.encode(pwd))
                 .build();
     }
 
